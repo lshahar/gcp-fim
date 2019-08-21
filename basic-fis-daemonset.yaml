@@ -19,7 +19,7 @@ spec:
         effect: NoSchedule
       containers:
       - name: basic-fim-scanner
-        image: us.gcr.io/{your-project-id}/basic-fim:latest
+        image: shaharil/gcp-fim:latest
         resources:
           limits:
             memory: 2Gi
