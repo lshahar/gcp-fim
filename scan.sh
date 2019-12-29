@@ -151,7 +151,7 @@ if [[  "$MISSINGFILES" != ""   ||  "$NEWFILES"  != ""  || -s $FAILEDFILES ]]
 then
   
   Z=$(<$FAILEDFILES)
-  SLACK_NOTIFY='{"channel": "#'$SLACK_CHANNEL'", "username": "FIM" , "icon_emoji": ":loudspeaker:" , "text": "*'$(hostname)'*: \n\r >>> *Files with content changes*:`'$Z'` \n\r >>> *New files*: `'$NEWFILES'` \n\r >>> *Deleted files*: `'$MISSINGFILES'` "}'
+  SLACK_NOTIFY='{"channel": "#'$SLACK_CHANNEL'", "username": "FIM" , "icon_emoji": ":loudspeaker:" , "text": "*'$NODE_NAME'*: \n\r >>> *Files with content changes*:`'$Z'` \n\r >>> *New files*: `'$NEWFILES'` \n\r >>> *Deleted files*: `'$MISSINGFILES'` "}'
   echo $SLACK_NOTIFY > /tmp/data
   curl -X POST -d @/tmp/data $SLACK_URL
 
