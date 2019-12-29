@@ -124,7 +124,7 @@ if [ -f "$FINGERPRINTS" ];then
     cat $FAILEDFILES \
     | xargs sha256sum 2>$ERRFILE \
     | tee -a $FINGERPRINTS $LOGFILE
-    rm $FAILEDFILES
+    
   fi
 fi
 
@@ -138,5 +138,27 @@ if [ -s $TMPFILE ]; then
 fi
 
 mv $TMPMANIFEST $MANIFEST
-rm $LOCKFILE $TMPFILE
+rm $LOCKFILE 
+
+# $FAILEDFILES_CONTENT=`cat $FAILEDFILES`
+# $TMPFILE=`cat $TMPFILE`
+
+echo "Miss" $MISSINGFILES
+echo "New" $NEWFILES
+echo "Files with changes" `cat $FAILEDFILES`
+
+if [[  "$MISSINGFILES" != ""   ||  "$NEWFILES"  != ""  || -s $FAILEDFILES ]]
+then
+  Z=$(<$FAILEDFILES)
+  SLACK_NOTIFY='{"channel": "#'$SLACK_CHANNEL'", "username": "FIM" , "icon_emoji": ":loudspeaker:" , "text": "Files with content changes:'$Z' \n\r New files: '$NEWFILES' \n\r Deleted files: '$MISSINGFILES' "}'
+  echo $SLACK_NOTIFY > /tmp/data
+  curl -X POST -d @/tmp/data $SLACK_URL
+
+else
+  echo "No alert sent"
+fi
+
+rm -f $TMPFILE
+rm -f $FAILEDFILES
+
 echo `date` Scan complete | tee -a $LOGFILE
