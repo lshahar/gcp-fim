@@ -34,6 +34,9 @@ IGNORE=(
   '/var/lib/update_engine/prefs'
   '/var/log'
   '/log/journal'
+  '/host-fs/var/lib/lxcfs'
+  '/host-fs/var/cache/apt'
+  '/host-fs/var/lib/apt/lists/'
   )
 
 LOGDIR=/logs
